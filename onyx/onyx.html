@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title></title>
+<meta name="author" content="(Artem Chernyak)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h2 class="author">Artem Chernyak</h2><p class="date">Created: 2016-10-19 Wed 12:51</p>
+</section>
+
+<section>
+<section id="slide-orgheadline5">
+<h2 id="orgheadline5">What does Onyx offer?</h2>
+<p>
+The distributed compute framework
+</p>
+</section>
+<section id="slide-orgheadline1">
+<h3 id="orgheadline1">Information model</h3>
+<ul>
+<li>flexible data structure</li>
+<li>constructible from various sources</li>
+<li>easier to use than an API</li>
+<li>easier to extend than a DSL</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline2">
+<h3 id="orgheadline2">Temporal decoupling</h3>
+<ul>
+<li>data is the highest importance</li>
+<li>constructs can be hot swapped</li>
+<li>construct configurations can be saved</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline3">
+<h3 id="orgheadline3">Focust on plain clojure</h3>
+<ul>
+<li>no dsl style macros</li>
+<li>vanila clojure functions</li>
+<li>decoupling of function and context</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline4">
+<h3 id="orgheadline4">Easy testing</h3>
+<ul>
+<li>simple environment configuration</li>
+<li>input and output is easily swapped</li>
+<li>no interface mocking</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+minScale: 0.20,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>

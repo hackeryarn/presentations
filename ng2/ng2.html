@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title></title>
+<meta name="author" content="(Artem Chernyak)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h2 class="author">Artem Chernyak</h2><p class="date">Created: 2016-09-29 Thu 15:11</p>
+</section>
+
+<section>
+<section id="slide-orgheadline4">
+<h2 id="orgheadline4">What's new?</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+</div></section>
+<section id="slide-orgheadline1">
+<h3 id="orgheadline1">Typescript</h3>
+<ul>
+<li>Types</li>
+<li>Declaration files</li>
+<li>IDE support</li>
+<li>"Standard" OO</li>
+<li>Built in module support</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline2">
+<h3 id="orgheadline2">Easy mobile and desktop</h3>
+<ul>
+<li>Ionic Framework</li>
+<li>Electron</li>
+<li>NativeScript</li>
+<li>React Native</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline3">
+<h3 id="orgheadline3">Angular CLI</h3>
+<ul>
+<li>Generate projects</li>
+<li>Generate components, services, etc.</li>
+<li>Easy environment management</li>
+<li>Building for environments</li>
+<li>Testing setup</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline10">
+<h2 id="orgheadline10">Performance</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+</div></section>
+<section id="slide-orgheadline5">
+<h3 id="orgheadline5">Garbage Collection</h3>
+
+<div class="figure">
+<p><img src="./gc.png" alt="gc.png" width="70%" />
+</p>
+</div>
+</section>
+<section id="slide-orgheadline6">
+<h3 id="orgheadline6">Layout rendering</h3>
+
+<div class="figure">
+<p><img src="./layout.png" alt="layout.png" width="70%" />
+</p>
+</div>
+</section>
+<section id="slide-orgheadline7">
+<h3 id="orgheadline7">Paint time</h3>
+
+<div class="figure">
+<p><img src="./paint.png" alt="paint.png" width="70%" />
+</p>
+</div>
+</section>
+<section id="slide-orgheadline8">
+<h3 id="orgheadline8">JavaScript execution</h3>
+
+<div class="figure">
+<p><img src="./js.png" alt="js.png" width="70%" />
+</p>
+</div>
+</section>
+<section id="slide-orgheadline9">
+<h3 id="orgheadline9">Dropped frames</h3>
+
+<div class="figure">
+<p><img src="./dropped.png" alt="dropped.png" width="70%" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline21">
+<h2 id="orgheadline21">1 vs 2</h2>
+<div class="outline-text-2" id="text-orgheadline21">
+</div></section>
+<section id="slide-orgheadline11">
+<h3 id="orgheadline11">Bindings/interpolation</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">p</span>&gt; 
+Your favorite hero is: 
+{{vm.favoriteHero}}
+&lt;/<span style="color: #cae682;">p</span>&gt;
+</pre>
+</div>
+</div>
+
+<div class="column" style="float:right; width: 50%">
+<p>
+Anguular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">p</span>&gt;
+Your favorite hero is: 
+{{favoriteHero}}
+&lt;/<span style="color: #cae682;">p</span>&gt;
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgheadline12">
+<h3 id="orgheadline12">Filter/Pipes</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">td</span>&gt;{{movie.price | currency}}&lt;/<span style="color: #cae682;">td</span>&gt;
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">td</span>&gt;{{movie.price | currency:'USD':true}}&lt;/<span style="color: #cae682;">td</span>&gt;
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgheadline13">
+<h3 id="orgheadline13">Local variables/Input variables</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">tr</span> <span style="color: #cae682;">ng-repeat</span>=<span style="color: #95e454;">"movie in vm.movies"</span>&gt;
+  &lt;<span style="color: #cae682;">td</span>&gt;{{movie.title}}&lt;/<span style="color: #cae682;">td</span>&gt;
+&lt;/<span style="color: #cae682;">tr</span>&gt;
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">tr</span> *ngFor=<span style="color: #95e454;">"let movie of movies"</span>&gt;
+  &lt;<span style="color: #cae682;">td</span>&gt;{{movie.title}}&lt;/<span style="color: #cae682;">td</span>&gt;
+&lt;/<span style="color: #cae682;">tr</span>&gt;
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgheadline14">
+<h3 id="orgheadline14">ng-app/Bootstrapping</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">body</span> <span style="color: #cae682;">ng-app</span>=<span style="color: #95e454;">"movieHunter"</span>&gt;
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-js"><span style="color: #8ac6f2; font-weight: bold;">import</span> { NgModule }      from <span style="color: #95e454;">'@angular/core'</span>;
+<span style="color: #8ac6f2; font-weight: bold;">import</span> { BrowserModule } from <span style="color: #95e454;">'@angular/platform-browser'</span>;
+
+<span style="color: #8ac6f2; font-weight: bold;">import</span> { AppComponent }  from <span style="color: #95e454;">'./app.component'</span>;
+
+@NgModule({
+  imports: [ BrowserModule ],
+  declarations: [ AppComponent ],
+  bootstrap: [ AppComponent ]
+})
+<span style="color: #8ac6f2; font-weight: bold;">export</span> <span style="color: #8ac6f2; font-weight: bold;">class</span> AppModule { }
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgheadline15">
+<h3 id="orgheadline15">ng-click/click</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">button</span> <span style="color: #cae682;">ng-click</span>=<span style="color: #95e454;">"vm.toggleImage()"</span>&gt;
+&lt;<span style="color: #cae682;">button</span> <span style="color: #cae682;">ng-click</span>=<span style="color: #95e454;">"vm.toggleImage($event)"</span>&gt;
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">button</span> (click)=<span style="color: #95e454;">"toggleImage()"</span>&gt;
+&lt;<span style="color: #cae682;">button</span> (click)=<span style="color: #95e454;">"toggleImage($event)"</span>&gt;
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgheadline16">
+<h3 id="orgheadline16">ng-controller/component</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">div</span> <span style="color: #cae682;">ng-controller</span>=<span style="color: #95e454;">"MovieCtrl as vm"</span>&gt;
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-js">@Component({
+  moduleId: module.id,
+  selector: <span style="color: #95e454;">'movie-list'</span>,
+  templateUrl: <span style="color: #95e454;">'movie-list.component.html'</span>,
+  styleUrls: [ <span style="color: #95e454;">'movie-list.component.css'</span> ],
+})
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgheadline17">
+<h3 id="orgheadline17">ng-href/href</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">a</span> <span style="color: #cae682;">ng-href</span>=<span style="color: #95e454;">"docsUrl"</span>&gt;Angular Docs&lt;/<span style="color: #cae682;">a</span>&gt;
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-js">&lt;a [href]=docsUrl<span style="color: #95e454;">"&gt;Angular Docs&lt;/a&gt;</span>
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgheadline18">
+<h3 id="orgheadline18">ng-if/*ngif</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">table</span> <span style="color: #cae682;">ng-if</span>=<span style="color: #95e454;">"movies.length"</span>&gt;
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">table</span> *ngIf=<span style="color: #95e454;">"movies.length"</span>&gt;
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgheadline19">
+<h3 id="orgheadline19">ng-model/ngModel</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">input</span> <span style="color: #cae682;">ng-model</span>=<span style="color: #95e454;">"vm.favoriteHero"</span>/&gt;
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">input</span> [(ngModel)]=<span style="color: #95e454;">"favoriteHero"</span>/&gt;
+</pre>
+</div>
+</div>
+</section>
+<section id="slide-orgheadline20">
+<h3 id="orgheadline20">stylesheets</h3>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 1
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-html">&lt;<span style="color: #cae682;">link</span> <span style="color: #cae682;">href</span>=<span style="color: #95e454;">"st.css"</span> <span style="color: #cae682;">rel</span>=<span style="color: #95e454;">"stylesheet"</span> /&gt;
+</pre>
+</div>
+</div>
+<div class="column" style="float:left; width: 50%">
+<p>
+Angular 2
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-js">styleUrls: [ <span style="color: #95e454;">'movie-list.component.css'</span> ]
+</pre>
+</div>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline22">
+<h2 id="orgheadline22">Sources</h2>
+<ul>
+<li>AuthO <a href="https://auth0.com/blog/more-benchmarks-virtual-dom-vs-angular-12-vs-mithril-js-vs-the-rest/">https://auth0.com/blog/more-benchmarks-virtual-dom-vs-angular-12-vs-mithril-js-vs-the-rest/</a></li>
+<li>angular.io <a href="https://angular.io">https://angular.io</a></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+minScale: 0.20,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>

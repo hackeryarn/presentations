@@ -1,0 +1,23 @@
+#+REVEAL_THEME: moon
+#+REVEAL_MIN_SCALE: 0.2
+#+OPTIONS: num:nil toc:nil reviel_single_file:t
+
+* What does Onyx offer?
+The distributed compute framework
+** Information model
+- flexible data structure
+- constructible from various sources
+- easier to use than an API
+- easier to extend than a DSL
+** Temporal decoupling
+- data is the highest importance
+- constructs can be hot swapped
+- construct configurations can be saved
+** Focust on plain clojure
+- no dsl style macros
+- vanila clojure functions
+- decoupling of function and context
+** Easy testing
+- simple environment configuration
+- input and output is easily swapped
+- no interface mocking

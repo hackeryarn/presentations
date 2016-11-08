@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Phoenix</title>
+<meta name="author" content="(Artem Chernyak)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">Phoenix</h1><h2 class="author">Artem Chernyak</h2><p class="date">Created: 2016-07-27 Wed 10:11</p>
+</section>
+
+<section>
+<section id="slide-orgheadline5">
+<h2 id="orgheadline5">What is Phoenix?</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+</div></section>
+<section id="slide-orgheadline1">
+<h3 id="orgheadline1">Built with Elixir</h3>
+<ul>
+<li>Functional</li>
+<li>Ruby like syntax</li>
+<li>Full macros support</li>
+<li>Built on top of Erlang</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline2">
+<h3 id="orgheadline2">Built in tools and concepts</h3>
+<ul>
+<li>Endpoints</li>
+<li>Router</li>
+<li>Controller</li>
+<li>View</li>
+<li>Templates</li>
+<li>Channels</li>
+<li>PubSub</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline3">
+<h3 id="orgheadline3">Performance</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Framework</th>
+<th scope="col" class="org-left">Throughput(req/s)</th>
+<th scope="col" class="org-right">Latency(ms)</th>
+<th scope="col" class="org-right">Consistency(o ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Play</td>
+<td class="org-left">63,256.20</td>
+<td class="org-right">1.62</td>
+<td class="org-right">10.25</td>
+</tr>
+
+<tr>
+<td class="org-left">Gin</td>
+<td class="org-left">51,483.20</td>
+<td class="org-right">1.94</td>
+<td class="org-right">1.35</td>
+</tr>
+
+<tr>
+<td class="org-left">Phoenix</td>
+<td class="org-left">43,063.45</td>
+<td class="org-right">2.82</td>
+<td class="org-right">3.50</td>
+</tr>
+
+<tr>
+<td class="org-left">Martini</td>
+<td class="org-left">14,798.46</td>
+<td class="org-right">6.81</td>
+<td class="org-right">10.70</td>
+</tr>
+
+<tr>
+<td class="org-left">Express</td>
+<td class="org-left">9,965.56</td>
+<td class="org-right">10.07</td>
+<td class="org-right">1.39</td>
+</tr>
+
+<tr>
+<td class="org-left">Sinatra</td>
+<td class="org-left">8,182.86</td>
+<td class="org-right">6.55</td>
+<td class="org-right">3.38</td>
+</tr>
+
+<tr>
+<td class="org-left">Rails</td>
+<td class="org-left">3,274.81</td>
+<td class="org-right">17.25</td>
+<td class="org-right">7.73</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="slide-orgheadline4">
+<h3 id="orgheadline4">Scalability</h3>
+<ul>
+<li>Server used:
+<ul>
+<li>Rackspace 15 GB I/O v1</li>
+<li>15 GB RAM</li>
+<li>4 VCPUS</li>
+<li>1,250Mb/s</li>
+
+</ul></li>
+<li>Started with 30,000 connections on a single machine</li>
+<li>Phoenix was optimized over a couple weeks (due to lack of test servers)</li>
+<li>2,000,000 web socket connections on a single machine, to a chat server</li>
+<li>Improvements are now live!</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline12">
+<h2 id="orgheadline12">Power of Erlang</h2>
+<div class="outline-text-2" id="text-orgheadline12">
+</div></section>
+<section id="slide-orgheadline6">
+<h3 id="orgheadline6">Erlang</h3>
+<ul>
+<li>created in mid-1980s</li>
+<li>designed for telecom</li>
+<li>connecting multiple systems</li>
+<li>minimal impact of errors</li>
+<li>entire system should never go down</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline7">
+<h3 id="orgheadline7">High Availability</h3>
+<ul>
+<li>fault tolerance</li>
+<li>scalability</li>
+<li>distribution</li>
+<li>responsiveness</li>
+<li>live update</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline8">
+<h3 id="orgheadline8">Server side systems</h3>
+
+<div class="figure">
+<p><img src="./otp.png" alt="otp.png" width="70%" />
+</p>
+</div>
+</section>
+<section id="slide-orgheadline9">
+<h3 id="orgheadline9">A modern system</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Technical requirements</th>
+<th scope="col" class="org-left">Server</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">HTTP server</td>
+<td class="org-left">Nginx and Phusion Passanger</td>
+</tr>
+
+<tr>
+<td class="org-left">Request processing</td>
+<td class="org-left">Ruby on Rails</td>
+</tr>
+
+<tr>
+<td class="org-left">Long-running requests</td>
+<td class="org-left">Java and Go</td>
+</tr>
+
+<tr>
+<td class="org-left">Server-wide state</td>
+<td class="org-left">Redis</td>
+</tr>
+
+<tr>
+<td class="org-left">Persistable data</td>
+<td class="org-left">Redis and MongoDB</td>
+</tr>
+
+<tr>
+<td class="org-left">Background jobs</td>
+<td class="org-left">Cron, Bash and Ruby</td>
+</tr>
+
+<tr>
+<td class="org-left">Service crash recovery</td>
+<td class="org-left">Upstart</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="slide-orgheadline10">
+<h3 id="orgheadline10">OTP way</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Technical requirements</th>
+<th scope="col" class="org-left">Server</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">HTTP server</td>
+<td class="org-left">Erlang</td>
+</tr>
+
+<tr>
+<td class="org-left">Request processing</td>
+<td class="org-left">Erlang</td>
+</tr>
+
+<tr>
+<td class="org-left">Long-running requests</td>
+<td class="org-left">Erlang</td>
+</tr>
+
+<tr>
+<td class="org-left">Server-wide state</td>
+<td class="org-left">Erlang</td>
+</tr>
+
+<tr>
+<td class="org-left">Persistable data</td>
+<td class="org-left">Erlang</td>
+</tr>
+
+<tr>
+<td class="org-left">Background jobs</td>
+<td class="org-left">Erlang</td>
+</tr>
+
+<tr>
+<td class="org-left">Service crash recovery</td>
+<td class="org-left">Erlang</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="slide-orgheadline11">
+<h3 id="orgheadline11">How do they do it?</h3>
+
+<div class="figure">
+<p><img src="./beam.png" alt="beam.png" width="70%" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline22">
+<h2 id="orgheadline22">Plug</h2>
+<div class="outline-text-2" id="text-orgheadline22">
+</div></section>
+<section id="slide-orgheadline13">
+<h3 id="orgheadline13">What is Plug?</h3>
+<ul>
+<li>specification for composable web modules</li>
+<li>sets up small reusable and composable modules
+<ul>
+<li>request header parsing, logging, authentication, etc.</li>
+
+</ul></li>
+<li>frequently used in a pipeline format</li>
+<li>comes in two flavors
+<ul>
+<li>function plugs</li>
+<li>module plugs</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-orgheadline14">
+<h3 id="orgheadline14">Function plugs</h3>
+<ul>
+<li>accepts a Plug.Conn{} and options</li>
+<li>return a Plug.Conn{}</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline15">
+<h3 id="orgheadline15">Function plugs example</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby"><span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">put_headers</span>(conn, key_values) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  <span style="color: #92a65e; font-weight: bold;">Enum</span>.reduce key_values, conn, fn{k, v}, conn -&gt;
+    <span style="color: #92a65e; font-weight: bold;">Plug</span>.<span style="color: #92a65e; font-weight: bold;">Conn</span>.put_resp_header(conn, to_string(k), v)
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline16">
+<h3 id="orgheadline16">Plug usage</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">MessageController</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">Web</span>, <span style="color: #e5786d;">:controller</span>
+
+  plug <span style="color: #e5786d;">:put_headers</span>, <span style="color: #95e454;">%{content_encoding: "gzip", cache_control: "max-age=3600"}</span>
+  plug <span style="color: #e5786d;">:put_layout</span>, <span style="color: #95e454;">"bare.html"</span>
+
+  ... 
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline17">
+<h3 id="orgheadline17">Authenticating with Plug</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">MessageController</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">Web</span>, <span style="color: #e5786d;">:controller</span>
+
+  plug <span style="color: #e5786d;">:authenticate</span>
+  plug <span style="color: #e5786d;">:find_message</span>
+  plug <span style="color: #e5786d;">:authorize_message</span>
+
+  <span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">show</span>(conn, params) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    render conn, <span style="color: #e5786d;">:show</span>, <span style="color: #e5786d;">page</span>: find_message(params[<span style="color: #95e454;">"id"</span>])
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+
+  defp authenticate(conn, _) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    <span style="color: #8ac6f2; font-weight: bold;">case</span> <span style="color: #92a65e; font-weight: bold;">Authenticator</span>.find_user(conn) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+      {<span style="color: #e5786d;">:ok</span>, user} -&gt;
+        assign(conn, <span style="color: #e5786d;">:user</span>, user)
+      <span style="color: #e5786d;">:error</span> -&gt;
+        conn |&gt; put_flash(<span style="color: #e5786d;">:info</span>, <span style="color: #95e454;">"You must be logged in"</span>) |&gt; redirect(<span style="color: #e5786d;">to</span>: <span style="color: #95e454;">"/"</span>) |&gt; halt
+    <span style="color: #8ac6f2; font-weight: bold;">end</span>
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+
+  defp find_message(conn, _) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    ...
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+
+  defp authorize_message(conn, _) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    ...
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline18">
+<h3 id="orgheadline18">Authenticating without Plug</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">MessageController</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">Web</span>, <span style="color: #e5786d;">:controller</span>
+
+  <span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">show</span>(conn, params) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    <span style="color: #8ac6f2; font-weight: bold;">case</span> authenticate(conn) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+      {<span style="color: #e5786d;">:ok</span>, user} -&gt;
+        <span style="color: #8ac6f2; font-weight: bold;">case</span> find_message(params[<span style="color: #95e454;">"id"</span>]) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+          <span style="color: #e5786d;">nil</span> -&gt;
+            conn |&gt; put_flash(<span style="color: #e5786d;">:info</span>, <span style="color: #95e454;">"That message wasn't found"</span>) |&gt; redirect(<span style="color: #e5786d;">to</span>: <span style="color: #95e454;">"/"</span>)
+          message -&gt;
+            <span style="color: #8ac6f2; font-weight: bold;">case</span> authorize_message(conn, params[<span style="color: #95e454;">"id"</span>]) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+              <span style="color: #e5786d;">:ok</span> -&gt;
+                render conn, <span style="color: #e5786d;">:show</span>, <span style="color: #e5786d;">page</span>: find_message(params[<span style="color: #95e454;">"id"</span>])
+              <span style="color: #e5786d;">:error</span> -&gt;
+                conn |&gt; put_flash(<span style="color: #e5786d;">:info</span>, <span style="color: #95e454;">"You can't access that page"</span>) |&gt; redirect(<span style="color: #e5786d;">to</span>: <span style="color: #95e454;">"/"</span>)
+            <span style="color: #8ac6f2; font-weight: bold;">end</span>
+        <span style="color: #8ac6f2; font-weight: bold;">end</span>
+      <span style="color: #e5786d;">:error</span> -&gt;
+        conn |&gt; put_flash(<span style="color: #e5786d;">:info</span>, <span style="color: #95e454;">"You must be logged in"</span>) |&gt; redirect(<span style="color: #e5786d;">to</span>: <span style="color: #95e454;">"/"</span>)
+    <span style="color: #8ac6f2; font-weight: bold;">end</span>
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline19">
+<h3 id="orgheadline19">Module Plug</h3>
+<ul>
+<li>requires init/1 to be defined</li>
+<li>requires call/2 to be defined
+<ul>
+<li>the same as the function plug earlier</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-orgheadline20">
+<h3 id="orgheadline20">Module plugs example</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">Plugs</span>.<span style="color: #92a65e; font-weight: bold;">Locale</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  import <span style="color: #92a65e; font-weight: bold;">Plug</span>.<span style="color: #92a65e; font-weight: bold;">Conn</span>
+
+  <span style="color: #cae682;">@locales</span> [<span style="color: #95e454;">"en"</span>, <span style="color: #95e454;">"fr"</span>, <span style="color: #95e454;">"de"</span>]
+
+  <span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">init</span>(default), <span style="color: #e5786d;">do</span>: default
+
+  <span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">call</span>(%<span style="color: #92a65e; font-weight: bold;">Plug</span>.<span style="color: #92a65e; font-weight: bold;">Conn</span>{<span style="color: #e5786d;">params</span>: <span style="color: #95e454;">%{"locale" =&gt; loc}</span>} = conn, _default) <span style="color: #8ac6f2; font-weight: bold;">when</span> loc <span style="color: #8ac6f2; font-weight: bold;">in</span> <span style="color: #cae682;">@locales</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    assign(conn, <span style="color: #e5786d;">:locale</span>, loc)
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+  <span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">call</span>(conn, default), <span style="color: #e5786d;">do</span>: assign(conn, <span style="color: #e5786d;">:locale</span>, default)
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline21">
+<h3 id="orgheadline21">Module plug usage</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">Router</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">Web</span>, <span style="color: #e5786d;">:router</span>
+
+  pipeline <span style="color: #e5786d;">:browser</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    plug <span style="color: #e5786d;">:accepts</span>, [<span style="color: #95e454;">"html"</span>]
+    plug <span style="color: #e5786d;">:fetch_session</span>
+    plug <span style="color: #e5786d;">:fetch_flash</span>
+    plug <span style="color: #e5786d;">:protect_from_forgery</span>
+    plug <span style="color: #e5786d;">:put_secure_browser_headers</span>
+    plug <span style="color: #92a65e; font-weight: bold;">HelloPhoenix</span>.<span style="color: #92a65e; font-weight: bold;">Plugs</span>.<span style="color: #92a65e; font-weight: bold;">Locale</span>, <span style="color: #95e454;">"en"</span>
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+  ...
+</pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline38">
+<h2 id="orgheadline38">Ecto</h2>
+<div class="outline-text-2" id="text-orgheadline38">
+</div></section>
+<section id="slide-orgheadline23">
+<h3 id="orgheadline23">Supported backends</h3>
+<ul>
+<li>PostgreSQL</li>
+<li>MySQL</li>
+<li>MSSQL</li>
+<li>SQLite3</li>
+<li>MongoDB</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline24">
+<h3 id="orgheadline24">Ecto.Repo</h3>
+<ul>
+<li>Manages DB connections</li>
+<li>Every connection gets it's own supervisor</li>
+<li>Multiple sessions are created under the supervisor</li>
+<li>Can be configured to have multiple supervisors</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline25">
+<h3 id="orgheadline25">Ecto.Repo Configuration</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">Repo</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">Ecto</span>.<span style="color: #92a65e; font-weight: bold;">Repo</span>, <span style="color: #e5786d;">otp_app</span>: <span style="color: #e5786d;">:my_app</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+
+<span style="color: #99968b;"># </span><span style="color: #99968b;">config.exs</span>
+config <span style="color: #e5786d;">:my_app</span>, <span style="color: #92a65e; font-weight: bold;">Repo</span>,
+  <span style="color: #e5786d;">adapter</span>: <span style="color: #92a65e; font-weight: bold;">Ecto</span>.<span style="color: #92a65e; font-weight: bold;">Adapters</span>.<span style="color: #92a65e; font-weight: bold;">Postgres</span>,
+  <span style="color: #e5786d;">database</span>: <span style="color: #95e454;">"ecto_simple"</span>,
+  <span style="color: #e5786d;">username</span>: <span style="color: #95e454;">"postgres"</span>,
+  <span style="color: #e5786d;">password</span>: <span style="color: #95e454;">"postgres"</span>,
+  <span style="color: #e5786d;">hostname</span>: <span style="color: #95e454;">"localhost"</span>,
+  <span style="color: #99968b;"># </span><span style="color: #99968b;">OR use a URL to connect instead</span>
+  <span style="color: #e5786d;">url</span>: <span style="color: #95e454;">"postgres://postgres:postgres@localhost/ecto_simple"</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline26">
+<h3 id="orgheadline26">Schema</h3>
+<ul>
+<li>define shape of the data</li>
+<li>allows interactions</li>
+<li>uses structs(unique key value store) to represent data</li>
+<li>don't need a schema to use operations that act on the entire data set</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline27">
+<h3 id="orgheadline27">Defining a schema</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">Weather</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">Ecto</span>.<span style="color: #92a65e; font-weight: bold;">Schema</span>
+
+  <span style="color: #99968b;"># </span><span style="color: #99968b;">weather is the DB table</span>
+  schema <span style="color: #95e454;">"weather"</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    field <span style="color: #e5786d;">:city</span>,    <span style="color: #e5786d;">:string</span>
+    field <span style="color: #e5786d;">:temp_lo</span>, <span style="color: #e5786d;">:integer</span>
+    field <span style="color: #e5786d;">:temp_hi</span>, <span style="color: #e5786d;">:integer</span>
+    field <span style="color: #e5786d;">:prcp</span>,    <span style="color: #e5786d;">:float</span>, <span style="color: #e5786d;">default</span>: 0.0
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline28">
+<h3 id="orgheadline28">Using the schema</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">iex&gt; weather = %<span style="color: #92a65e; font-weight: bold;">Weather</span>{<span style="color: #e5786d;">temp_lo</span>: 30}
+iex&gt; weather.temp_lo
+30
+
+iex&gt; weather = %<span style="color: #92a65e; font-weight: bold;">Weather</span>{<span style="color: #e5786d;">temp_lo</span>: 0, <span style="color: #e5786d;">temp_hi</span>: 23}
+iex&gt; <span style="color: #92a65e; font-weight: bold;">Repo</span>.insert!(weather)
+%<span style="color: #92a65e; font-weight: bold;">Weather</span>{...}
+
+<span style="color: #99968b;"># </span><span style="color: #99968b;">Get the struct back</span>
+iex&gt; weather = <span style="color: #92a65e; font-weight: bold;">Repo</span>.get <span style="color: #92a65e; font-weight: bold;">Weather</span>, 1
+%<span style="color: #92a65e; font-weight: bold;">Weather</span>{<span style="color: #e5786d;">id</span>: 1, ...}
+
+<span style="color: #99968b;"># </span><span style="color: #99968b;">Delete it</span>
+iex&gt; <span style="color: #92a65e; font-weight: bold;">Repo</span>.delete!(weather)
+%<span style="color: #92a65e; font-weight: bold;">Weather</span>{...}
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline29">
+<h3 id="orgheadline29">Changesets</h3>
+<ul>
+<li>Composition of all data operation</li>
+<li>Defining specific database actions</li>
+<li>Validation and error handling</li>
+<li>Error message formatting</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline30">
+<h3 id="orgheadline30">Defining changesets</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">User</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">Ecto</span>.<span style="color: #92a65e; font-weight: bold;">Schema</span>
+
+  import <span style="color: #92a65e; font-weight: bold;">Ecto</span>.<span style="color: #92a65e; font-weight: bold;">Changeset</span>
+
+  schema <span style="color: #95e454;">"users"</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    field <span style="color: #e5786d;">:name</span>
+    field <span style="color: #e5786d;">:email</span>
+    field <span style="color: #e5786d;">:age</span>, <span style="color: #e5786d;">:integer</span>
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+
+  <span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">changeset</span>(user, params \\ <span style="color: #95e454;">%{}</span>) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    user
+    |&gt; cast(params, [<span style="color: #e5786d;">:name</span>, <span style="color: #e5786d;">:email</span>, <span style="color: #e5786d;">:age</span>])
+    |&gt; validate_required([<span style="color: #e5786d;">:name</span>, <span style="color: #e5786d;">:email</span>])
+    |&gt; validate_format(<span style="color: #e5786d;">:email</span>, ~r/@/)
+    |&gt; validate_inclusion(<span style="color: #e5786d;">:age</span>, 18..100)
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline31">
+<h3 id="orgheadline31">Using changesets</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby"><span style="color: #8ac6f2; font-weight: bold;">case</span> <span style="color: #92a65e; font-weight: bold;">Repo</span>.update(changeset) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  {<span style="color: #e5786d;">:ok</span>, user} -&gt;
+    <span style="color: #99968b;"># </span><span style="color: #99968b;">user updated</span>
+  {<span style="color: #e5786d;">:error</span>, changeset} -&gt;
+    <span style="color: #99968b;"># </span><span style="color: #99968b;">an error occurred</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+
+<span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">registration_changeset</span>(user, params) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  <span style="color: #99968b;"># </span><span style="color: #99968b;">Changeset on create</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+
+<span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">update_changeset</span>(user, params) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  <span style="color: #99968b;"># </span><span style="color: #99968b;">Changeset on update</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline32">
+<h3 id="orgheadline32">Query against schema</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">import <span style="color: #92a65e; font-weight: bold;">Ecto</span>.<span style="color: #92a65e; font-weight: bold;">Query</span>, <span style="color: #e5786d;">only</span>: [<span style="color: #e5786d;">from</span>: 2]
+
+query = from u <span style="color: #8ac6f2; font-weight: bold;">in</span> <span style="color: #92a65e; font-weight: bold;">User</span>,
+          <span style="color: #e5786d;">where</span>: u.age &gt; 18 <span style="color: #8ac6f2; font-weight: bold;">or</span> is_nil(u.email),
+          <span style="color: #e5786d;">select</span>: u
+
+<span style="color: #99968b;"># </span><span style="color: #99968b;">Returns %User{} structs matching the query</span>
+<span style="color: #92a65e; font-weight: bold;">Repo</span>.all(query)
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline33">
+<h3 id="orgheadline33">Query against table</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">query = from u <span style="color: #8ac6f2; font-weight: bold;">in</span> <span style="color: #95e454;">"users"</span>,
+          <span style="color: #e5786d;">where</span>: u.age &gt; 18 <span style="color: #8ac6f2; font-weight: bold;">or</span> is_nil(u.email),
+          <span style="color: #e5786d;">select</span>: <span style="color: #95e454;">%{name: u.name, age: u.age}</span>
+
+<span style="color: #99968b;"># </span><span style="color: #99968b;">Returns maps as defined in select</span>
+<span style="color: #92a65e; font-weight: bold;">Repo</span>.all(query)
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline34">
+<h3 id="orgheadline34">Associations</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">Post</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">Ecto</span>.<span style="color: #92a65e; font-weight: bold;">Schema</span>
+
+  schema <span style="color: #95e454;">"posts"</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    has_many <span style="color: #e5786d;">:comments</span>, <span style="color: #92a65e; font-weight: bold;">Comment</span>
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+
+defmodule <span style="color: #92a65e; font-weight: bold;">Comment</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">Ecto</span>.<span style="color: #92a65e; font-weight: bold;">Schema</span>
+
+  schema <span style="color: #95e454;">"comments"</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    field <span style="color: #e5786d;">:title</span>, <span style="color: #e5786d;">:string</span>
+    belongs_to <span style="color: #e5786d;">:post</span>, <span style="color: #92a65e; font-weight: bold;">Post</span>
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline35">
+<h3 id="orgheadline35">Querying associations</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby"><span style="color: #92a65e; font-weight: bold;">Repo</span>.all from <span style="color: #e5786d;">p</span> <span style="color: #8ac6f2; font-weight: bold;">in</span> <span style="color: #92a65e; font-weight: bold;">Post</span>, <span style="color: #e5786d;">preload</span>: [<span style="color: #e5786d;">:comments</span>]
+
+<span style="color: #92a65e; font-weight: bold;">Repo</span>.all from <span style="color: #e5786d;">p</span> <span style="color: #8ac6f2; font-weight: bold;">in</span> <span style="color: #92a65e; font-weight: bold;">Post</span>,
+          <span style="color: #e5786d;">join</span>: c <span style="color: #8ac6f2; font-weight: bold;">in</span> assoc(p, <span style="color: #e5786d;">:comments</span>),
+          <span style="color: #e5786d;">where</span>: c.votes &gt; p.votes,
+          <span style="color: #e5786d;">preload</span>: [<span style="color: #e5786d;">comments</span>: c]
+
+posts = <span style="color: #92a65e; font-weight: bold;">Repo</span>.all(<span style="color: #92a65e; font-weight: bold;">Post</span>) |&gt; <span style="color: #92a65e; font-weight: bold;">Repo</span>.preload(<span style="color: #e5786d;">:comments</span>)
+
+<span style="color: #92a65e; font-weight: bold;">Repo</span>.all assoc(post, <span style="color: #e5786d;">:comments</span>)
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline36">
+<h3 id="orgheadline36">Updating through associations</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby"><span style="color: #92a65e; font-weight: bold;">Repo</span>.transaction fn -&gt;
+  post = <span style="color: #92a65e; font-weight: bold;">Repo</span>.insert!(%<span style="color: #92a65e; font-weight: bold;">Post</span>{<span style="color: #e5786d;">title</span>: <span style="color: #95e454;">"Hello"</span>, <span style="color: #e5786d;">body</span>: <span style="color: #95e454;">"world"</span>})
+
+  <span style="color: #99968b;"># </span><span style="color: #99968b;">Build a comment from post</span>
+  comment = <span style="color: #92a65e; font-weight: bold;">Ecto</span>.build_assoc(post, <span style="color: #e5786d;">:comments</span>, <span style="color: #e5786d;">body</span>: <span style="color: #95e454;">"Excellent!"</span>)
+
+  <span style="color: #92a65e; font-weight: bold;">Repo</span>.insert!(comment)
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+
+%<span style="color: #92a65e; font-weight: bold;">Comment</span>{<span style="color: #e5786d;">post_id</span>: post.id, <span style="color: #e5786d;">body</span>: <span style="color: #95e454;">"Excellent!"</span>}
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline37">
+<h3 id="orgheadline37">Migrations</h3>
+<div class="org-src-container">
+
+<pre  class="src src-ruby">defmodule <span style="color: #92a65e; font-weight: bold;">MyRepo</span>.<span style="color: #92a65e; font-weight: bold;">Migrations</span>.<span style="color: #92a65e; font-weight: bold;">CreatePosts</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+  use <span style="color: #92a65e; font-weight: bold;">Ecto</span>.<span style="color: #92a65e; font-weight: bold;">Migration</span>
+
+  <span style="color: #8ac6f2; font-weight: bold;">def</span> <span style="color: #cae682;">change</span> <span style="color: #8ac6f2; font-weight: bold;">do</span>
+    create table(<span style="color: #e5786d;">:weather</span>) <span style="color: #8ac6f2; font-weight: bold;">do</span>
+      add <span style="color: #e5786d;">:city</span>,    <span style="color: #e5786d;">:string</span>, <span style="color: #e5786d;">size</span>: 40
+      add <span style="color: #e5786d;">:temp_lo</span>, <span style="color: #e5786d;">:integer</span>
+      add <span style="color: #e5786d;">:temp_hi</span>, <span style="color: #e5786d;">:integer</span>
+      add <span style="color: #e5786d;">:prcp</span>,    <span style="color: #e5786d;">:float</span>
+
+      timestamps
+    <span style="color: #8ac6f2; font-weight: bold;">end</span>
+  <span style="color: #8ac6f2; font-weight: bold;">end</span>
+<span style="color: #8ac6f2; font-weight: bold;">end</span>
+</pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline39">
+<h2 id="orgheadline39">Additional features</h2>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+minScale: 0.20,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>

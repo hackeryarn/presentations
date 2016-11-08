@@ -1,0 +1,200 @@
+#+REVEAL_THEME: moon
+#+REVEAL_MIN_SCALE: 0.2
+#+OPTIONS: num:nil toc:nil reviel_single_file:t
+
+* What's new?
+** Typescript
+- Types
+- Declaration files
+- IDE support
+- "Standard" OO
+- Built in module support
+** Easy mobile and desktop
+- Ionic Framework
+- Electron
+- NativeScript
+- React Native
+** Angular CLI
+- Generate projects
+- Generate components, services, etc.
+- Easy environment management
+- Building for environments
+- Testing setup
+* Performance
+** Garbage Collection
+#+ATTR_HTML: :width 70% 
+[[./gc.png]]
+** Layout rendering
+#+ATTR_HTML: :width 70% 
+[[./layout.png]]
+** Paint time
+#+ATTR_HTML: :width 70% 
+[[./paint.png]]
+** JavaScript execution
+#+ATTR_HTML: :width 70% 
+[[./js.png]]
+** Dropped frames
+#+ATTR_HTML: :width 70% 
+[[./dropped.png]]
+* 1 vs 2
+** Bindings/interpolation
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<p> 
+Your favorite hero is: 
+{{vm.favoriteHero}}
+</p>
+#+END_SRC
+#+REVEAL_HTML: </div>
+
+#+REVEAL_HTML: <div class="column" style="float:right; width: 50%">
+Anguular 2
+#+BEGIN_SRC html
+<p>
+Your favorite hero is: 
+{{favoriteHero}}
+</p>
+#+END_SRC
+#+REVEAL_HTML: </div>
+** Filter/Pipes
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<td>{{movie.price | currency}}</td>
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 2
+#+BEGIN_SRC html
+<td>{{movie.price | currency:'USD':true}}</td>
+#+END_SRC
+#+REVEAL_HTML: </div>
+** Local variables/Input variables
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<tr ng-repeat="movie in vm.movies">
+  <td>{{movie.title}}</td>
+</tr>
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 2
+#+BEGIN_SRC html
+<tr *ngFor="let movie of movies">
+  <td>{{movie.title}}</td>
+</tr>
+#+END_SRC
+#+REVEAL_HTML: </div>
+** ng-app/Bootstrapping
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<body ng-app="movieHunter">
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 2
+#+BEGIN_SRC js
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent }  from './app.component';
+
+@NgModule({
+  imports: [ BrowserModule ],
+  declarations: [ AppComponent ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }
+#+END_SRC
+#+REVEAL_HTML: </div>
+** ng-click/click
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<button ng-click="vm.toggleImage()">
+<button ng-click="vm.toggleImage($event)">
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 2
+#+BEGIN_SRC html
+<button (click)="toggleImage()">
+<button (click)="toggleImage($event)">
+#+END_SRC
+#+REVEAL_HTML: </div>
+** ng-controller/component
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<div ng-controller="MovieCtrl as vm">
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 2
+#+BEGIN_SRC js
+@Component({
+  moduleId: module.id,
+  selector: 'movie-list',
+  templateUrl: 'movie-list.component.html',
+  styleUrls: [ 'movie-list.component.css' ],
+})
+#+END_SRC
+#+REVEAL_HTML: </div>
+** ng-href/href
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<a ng-href="docsUrl">Angular Docs</a>
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 2
+#+BEGIN_SRC js
+<a [href]=docsUrl">Angular Docs</a>
+#+END_SRC
+#+REVEAL_HTML: </div>
+** ng-if/*ngif
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<table ng-if="movies.length">
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 2
+#+BEGIN_SRC html
+<table *ngIf="movies.length">
+#+END_SRC
+#+REVEAL_HTML: </div>
+** ng-model/ngModel
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<input ng-model="vm.favoriteHero"/>
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 2
+#+BEGIN_SRC html
+<input [(ngModel)]="favoriteHero"/>
+#+END_SRC
+#+REVEAL_HTML: </div>
+** stylesheets
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 1
+#+BEGIN_SRC html
+<link href="st.css" rel="stylesheet" />
+#+END_SRC
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div class="column" style="float:left; width: 50%">
+Angular 2
+#+BEGIN_SRC js
+styleUrls: [ 'movie-list.component.css' ]
+#+END_SRC
+#+REVEAL_HTML: </div>
+* Sources
+- AuthO https://auth0.com/blog/more-benchmarks-virtual-dom-vs-angular-12-vs-mithril-js-vs-the-rest/
+- angular.io https://angular.io

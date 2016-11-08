@@ -1,0 +1,393 @@
+#+REVEAL_THEME: moon
+#+REVEAL_MIN_SCALE: 0.2
+#+OPTIONS: num:nil toc:nil reviel_single_file:t
+#+TITLE: Phoenix
+#+AUTHOR: Artem Chernyak
+
+* What is Phoenix?
+** Built with Elixir
+- Functional
+- Ruby like syntax
+- Full macros support
+- Built on top of Erlang
+** Built in tools and concepts
+- Endpoints
+- Router
+- Controller
+- View
+- Templates
+- Channels
+- PubSub
+** Performance
+| Framework | Throughput(req/s) | Latency(ms) | Consistency(o ms) |
+|-----------+-------------------+-------------+-------------------|
+| Play      | 63,256.20         |        1.62 |             10.25 |
+| Gin       | 51,483.20         |        1.94 |              1.35 |
+| Phoenix   | 43,063.45         |        2.82 |              3.50 |
+| Martini   | 14,798.46         |        6.81 |             10.70 |
+| Express   | 9,965.56          |       10.07 |              1.39 |
+| Sinatra   | 8,182.86          |        6.55 |              3.38 |
+| Rails     | 3,274.81          |       17.25 |              7.73 |
+** Scalability
+- Server used:
+  - Rackspace 15 GB I/O v1
+  - 15 GB RAM
+  - 4 VCPUS
+  - 1,250Mb/s
+- Started with 30,000 connections on a single machine
+- Phoenix was optimized over a couple weeks (due to lack of test servers)
+- 2,000,000 web socket connections on a single machine, to a chat server
+- Improvements are now live!
+* Power of Erlang
+** Erlang
+- created in mid-1980s
+- designed for telecom
+- connecting multiple systems
+- minimal impact of errors
+- entire system should never go down
+** High Availability
+- fault tolerance
+- scalability
+- distribution
+- responsiveness
+- live update
+** Server side systems
+#+ATTR_HTML: :width 70% 
+[[./otp.png]]
+** A modern system
+| Technical requirements | Server                      |
+|------------------------+-----------------------------|
+| HTTP server            | Nginx and Phusion Passanger |
+| Request processing     | Ruby on Rails               |
+| Long-running requests  | Java and Go                 |
+| Server-wide state      | Redis                       |
+| Persistable data       | Redis and MongoDB           |
+| Background jobs        | Cron, Bash and Ruby         |
+| Service crash recovery | Upstart                     |
+** OTP way
+| Technical requirements | Server |
+|------------------------+--------|
+| HTTP server            | Erlang |
+| Request processing     | Erlang |
+| Long-running requests  | Erlang |
+| Server-wide state      | Erlang |
+| Persistable data       | Erlang |
+| Background jobs        | Erlang |
+| Service crash recovery | Erlang |
+** How do they do it?
+#+ATTR_HTML: :width 70%
+ [[./beam.png]]
+* Plug
+** What is Plug?
+- specification for composable web modules
+- sets up small reusable and composable modules
+  - request header parsing, logging, authentication, etc.
+- frequently used in a pipeline format
+- comes in two flavors
+  - function plugs
+  - module plugs
+** Function plugs
+   - accepts a Plug.Conn{} and options
+   - return a Plug.Conn{}
+** Function plugs example
+#+BEGIN_SRC ruby
+def put_headers(conn, key_values) do
+  Enum.reduce key_values, conn, fn{k, v}, conn ->
+    Plug.Conn.put_resp_header(conn, to_string(k), v)
+  end
+end
+#+END_SRC
+** Plug usage
+#+BEGIN_SRC ruby
+defmodule HelloPhoenix.MessageController do
+  use HelloPhoenix.Web, :controller
+
+  plug :put_headers, %{content_encoding: "gzip", cache_control: "max-age=3600"}
+  plug :put_layout, "bare.html"
+
+  ... 
+end
+#+END_SRC
+** Authenticating with Plug
+#+ATTR_HTML: :style font-size:50%
+#+BEGIN_SRC ruby
+defmodule HelloPhoenix.MessageController do
+  use HelloPhoenix.Web, :controller
+
+  plug :authenticate
+  plug :find_message
+  plug :authorize_message
+
+  def show(conn, params) do
+    render conn, :show, page: find_message(params["id"])
+  end
+
+  defp authenticate(conn, _) do
+    case Authenticator.find_user(conn) do
+      {:ok, user} ->
+        assign(conn, :user, user)
+      :error ->
+        conn |> put_flash(:info, "You must be logged in") |> redirect(to: "/") |> halt
+    end
+  end
+
+  defp find_message(conn, _) do
+    ...
+  end
+
+  defp authorize_message(conn, _) do
+    ...
+  end
+end
+#+END_SRC
+** Authenticating without Plug
+#+BEGIN_SRC ruby
+defmodule HelloPhoenix.MessageController do
+  use HelloPhoenix.Web, :controller
+
+  def show(conn, params) do
+    case authenticate(conn) do
+      {:ok, user} ->
+        case find_message(params["id"]) do
+          nil ->
+            conn |> put_flash(:info, "That message wasn't found") |> redirect(to: "/")
+          message ->
+            case authorize_message(conn, params["id"]) do
+              :ok ->
+                render conn, :show, page: find_message(params["id"])
+              :error ->
+                conn |> put_flash(:info, "You can't access that page") |> redirect(to: "/")
+            end
+        end
+      :error ->
+        conn |> put_flash(:info, "You must be logged in") |> redirect(to: "/")
+    end
+  end
+end
+#+END_SRC
+** Module Plug
+   - requires init/1 to be defined
+   - requires call/2 to be defined
+     - the same as the function plug earlier
+** Module plugs example
+   #+BEGIN_SRC ruby
+     defmodule HelloPhoenix.Plugs.Locale do
+       import Plug.Conn
+
+       @locales ["en", "fr", "de"]
+
+       def init(default), do: default
+
+       def call(%Plug.Conn{params: %{"locale" => loc}} = conn, _default) when loc in @locales do
+         assign(conn, :locale, loc)
+       end
+       def call(conn, default), do: assign(conn, :locale, default)
+     end
+   #+END_SRC
+** Module plug usage
+   #+BEGIN_SRC ruby
+     defmodule HelloPhoenix.Router do
+       use HelloPhoenix.Web, :router
+
+       pipeline :browser do
+         plug :accepts, ["html"]
+         plug :fetch_session
+         plug :fetch_flash
+         plug :protect_from_forgery
+         plug :put_secure_browser_headers
+         plug HelloPhoenix.Plugs.Locale, "en"
+       end
+       ...
+   #+END_SRC
+* Ecto
+** Supported backends 
+   - PostgreSQL
+   - MySQL
+   - MSSQL
+   - SQLite3
+   - MongoDB
+** Ecto.Repo
+   - Manages DB connections
+   - Every connection gets it's own supervisor
+   - Multiple sessions are created under the supervisor
+   - Can be configured to have multiple supervisors
+** Ecto.Repo Configuration
+   #+BEGIN_SRC ruby
+     defmodule Repo do
+       use Ecto.Repo, otp_app: :my_app
+     end
+
+     # config.exs
+     config :my_app, Repo,
+       adapter: Ecto.Adapters.Postgres,
+       database: "ecto_simple",
+       username: "postgres",
+       password: "postgres",
+       hostname: "localhost",
+       # OR use a URL to connect instead
+       url: "postgres://postgres:postgres@localhost/ecto_simple"
+   #+END_SRC
+** Schema
+   - define shape of the data
+   - allows interactions
+   - uses structs(unique key value store) to represent data
+   - don't need a schema to use operations that act on the entire data set
+** Defining a schema
+   #+BEGIN_SRC ruby
+     defmodule Weather do
+       use Ecto.Schema
+
+       # weather is the DB table
+       schema "weather" do
+         field :city,    :string
+         field :temp_lo, :integer
+         field :temp_hi, :integer
+         field :prcp,    :float, default: 0.0
+       end
+     end
+   #+END_SRC
+** Using the schema
+   #+BEGIN_SRC ruby
+     iex> weather = %Weather{temp_lo: 30}
+     iex> weather.temp_lo
+     30
+
+     iex> weather = %Weather{temp_lo: 0, temp_hi: 23}
+     iex> Repo.insert!(weather)
+     %Weather{...}
+
+     # Get the struct back
+     iex> weather = Repo.get Weather, 1
+     %Weather{id: 1, ...}
+
+     # Delete it
+     iex> Repo.delete!(weather)
+     %Weather{...}
+   #+END_SRC
+** Changesets
+   - Composition of all data operation
+   - Defining specific database actions
+   - Validation and error handling
+   - Error message formatting
+** Defining changesets
+   #+BEGIN_SRC ruby
+     defmodule User do
+       use Ecto.Schema
+
+       import Ecto.Changeset
+
+       schema "users" do
+         field :name
+         field :email
+         field :age, :integer
+       end
+
+       def changeset(user, params \\ %{}) do
+         user
+         |> cast(params, [:name, :email, :age])
+         |> validate_required([:name, :email])
+         |> validate_format(:email, ~r/@/)
+         |> validate_inclusion(:age, 18..100)
+       end
+     end
+   #+END_SRC
+** Using changesets
+   #+BEGIN_SRC ruby
+     case Repo.update(changeset) do
+       {:ok, user} ->
+         # user updated
+       {:error, changeset} ->
+         # an error occurred
+     end
+    
+     def registration_changeset(user, params) do
+       # Changeset on create
+     end
+
+     def update_changeset(user, params) do
+       # Changeset on update
+     end    
+   #+END_SRC
+** Query against schema
+   #+BEGIN_SRC ruby
+     import Ecto.Query, only: [from: 2]
+
+     query = from u in User,
+               where: u.age > 18 or is_nil(u.email),
+               select: u
+
+     # Returns %User{} structs matching the query
+     Repo.all(query)
+   #+END_SRC
+** Query against table
+   #+BEGIN_SRC ruby
+     query = from u in "users",
+               where: u.age > 18 or is_nil(u.email),
+               select: %{name: u.name, age: u.age}
+
+     # Returns maps as defined in select
+     Repo.all(query)
+   #+END_SRC
+** Associations
+   #+BEGIN_SRC ruby
+     defmodule Post do
+       use Ecto.Schema
+
+       schema "posts" do
+         has_many :comments, Comment
+       end
+     end
+
+     defmodule Comment do
+       use Ecto.Schema
+
+       schema "comments" do
+         field :title, :string
+         belongs_to :post, Post
+       end
+     end
+   #+END_SRC
+** Querying associations
+   #+BEGIN_SRC ruby
+     Repo.all from p in Post, preload: [:comments]
+
+     Repo.all from p in Post,
+               join: c in assoc(p, :comments),
+               where: c.votes > p.votes,
+               preload: [comments: c]
+
+     posts = Repo.all(Post) |> Repo.preload(:comments)
+
+     Repo.all assoc(post, :comments)
+   #+END_SRC
+** Updating through associations
+   #+BEGIN_SRC ruby
+     Repo.transaction fn ->
+       post = Repo.insert!(%Post{title: "Hello", body: "world"})
+
+       # Build a comment from post
+       comment = Ecto.build_assoc(post, :comments, body: "Excellent!")
+
+       Repo.insert!(comment)
+     end
+
+     %Comment{post_id: post.id, body: "Excellent!"}
+   #+END_SRC
+** Migrations
+   #+BEGIN_SRC ruby
+     defmodule MyRepo.Migrations.CreatePosts do
+       use Ecto.Migration
+
+       def change do
+         create table(:weather) do
+           add :city,    :string, size: 40
+           add :temp_lo, :integer
+           add :temp_hi, :integer
+           add :prcp,    :float
+
+           timestamps
+         end
+       end
+     end
+   #+END_SRC
+* Additional features
