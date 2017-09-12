@@ -1,2 +1,2 @@
 # presentations
-Presentations I have created for local meetups
+Presentations I created for local meetups
