@@ -285,4 +285,105 @@ layout: true
 
 ---
 
-test
+Basic environment:
+
+```yaml
+machine:
+  environment:
+    PATH: ~/.roswell/bin:$PATH
+    LLVM_CONFIG: /usr/lib/llvm-3.6/bin/llvm-config
+```
+
+---
+
+Pre dependencies:
+
+```yaml
+dependencies:
+  pre:
+    - sudo bash -c 'echo "deb http://mirrors.kernel.org/ubuntu vivid main universe" >> /etc/apt/sources.list'
+    - sudo apt-get update
+    - apt-cache search pocl 
+    - apt-cache search icd
+    - apt-cache search opencl
+    - sudo apt-get install -y libltdl3-dev libhwloc-dev ocl-icd-opencl-dev g++-4.8 clang-3.6 libclang-3.6-dev llvm-3.6-dev libedit-dev
+    - ./build-pocl.sh
+    - sudo make -C pocl install
+    - curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
+    - ros install ccl-bin
+    - git clone https://github.com/cffi/cffi.git ~/lisp/cffi
+```
+
+---
+
+Post dependencies:
+
+```yaml
+  post:
+    - ros install cffi
+    - ros install cffi-grovel
+    - ros install eazy-opencl
+```
+---
+
+Cache directories:
+
+```yaml
+  cache_directories:
+    - ~/.roswell/
+    - pocl
+```
+
+---
+
+Run tests:
+
+```yaml
+test:
+  override:
+    - ros -L sbcl-bin testscr.ros
+    - ros -L ccl-bin testscr.ros
+```
+
+---
+
+layout: true
+.left-column[
+##### Travis CI
+##### Circle CI
+#### Coveralls
+]
+
+.right-column[
+{{content}}
+]
+
+---
+
+Using `run-prove`:
+
+```yaml
+language: common-lisp
+sudo: required
+
+env:
+  global:
+    - PATH=~/.roswell/bin:$PATH
+    - COVERAGE_EXCLUDE=t/
+  matrix:
+    - LISP=sbcl-bin COVERALLS=true
+    - LISP=ccl-bin
+    - LISP=abcl
+    - LISP=clisp
+    - LISP=ecl
+
+matrix:
+  allow_failures:
+    - env: LISP=clisp
+
+install:
+  - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
+
+script:
+  - run-prove quri-test.asd
+```
