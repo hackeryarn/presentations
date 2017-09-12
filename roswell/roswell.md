@@ -33,12 +33,15 @@ Windows:
 $ ros install slime
 ```
 
+
 Add to your emacs config:
 ```elisp
+(load (expand-file-name "~/.roswell/helper.el"))
 (setq inferior-lisp-program "ros -Q run")
 
 ;; or
 
+(load (expand-file-name "~/.roswell/helper.el"))
 (setf slime-lisp-implementations
       `((sbcl    ("sbcl" "--dynamic-space-size" "2000"))
         (roswell ("ros" "-Q" "run"))))
